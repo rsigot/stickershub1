@@ -1,0 +1,15 @@
+.WAXUALbutton {
+    position: fixed;
+    top: 20px;
+    right: 150px;
+    background-color: #00ff00;
+    color: #1b1b1b;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    z-index: 2;
+    }
+
+.WAXUALbutton:hover {
+    background-color: #00dd00; /* Cambia el color al pasar el mouse */
+    }    

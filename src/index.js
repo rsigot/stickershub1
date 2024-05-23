@@ -1,14 +1,59 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { JsonRpc } from 'eosjs';
+import { UALProvider } from 'ual-reactjs-renderer';
+import { Wax } from "@eosdacio/ual-wax";
+import { Anchor } from 'ual-anchor';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+import { HashRouter } from 'react-router-dom';
+
+//import { Ledger } from 'ual-ledger';
+//import { Scatter } from 'ual-scatter';
+//import { Starteos } from 'ual-starteos';
+//import { Wombat } from 'ual-wombat';
+
+//solucion al problema de Buffer
+import * as buffer from "buffer";
+window.Buffer = buffer.Buffer;
+
+const appName = "Stickers Hub";
+
+const chains = {
+    chainId: "1064487b3cd1a897ce03ae5b6a865651747e2e152090f99c1d19d44e01aea5a4",
+    rpcEndpoints: [
+        {
+            protocol: 'https',
+            host: 'wax.greymass.com',
+            port: 443,
+        }
+    ],
+};
+
+const endpoint = `${chains.rpcEndpoints[0].protocol}://${chains.rpcEndpoints[0].host}:${chains.rpcEndpoints[0].port}`;
+const rpc = new JsonRpc(endpoint);
+
+const wcw = new Wax([chains]);
+const anchor = new Anchor([chains], { appName: appName });
+//const ledger  = new Ledger([chains]);
+//const scatter = new Scatter([chains], { appName: appName });
+//const starteos  = new Starteos([chains], { appName: appName });
+//const wombat  = new Wombat([chains], { appName: appName });
+
+ReactDOM.render(
+    <>
+    <HashRouter>
+        <UALProvider
+            appName={appName}
+            authenticators={[wcw, anchor]}
+            chains={[chains]}
+        >
+            <App rpc={rpc} />
+        </UALProvider>
+    </HashRouter>    
+    </>,
+    document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function
